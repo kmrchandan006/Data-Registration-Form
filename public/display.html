@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Users List</title>
+    <link rel="stylesheet" href="display.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <h1>Users List</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Mobile No</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Login ID</th>
+          <th>Password</th>
+        </tr>
+      </thead>
+      <tbody id="usersTableBody"></tbody>
+    </table>
+    <button id="addNewUserBtn">Add New User</button>
+    <script>
+      $(document).ready(function () {
+        $.ajax({
+          type: "GET",
+          url: "http://localhost:4000/api/users/",
+          success: function (response) {
+            const usersTableBody = $("#usersTableBody");
+            response.forEach((user) => {
+              const userRow = `
+                            <tr>
+                                <td>${user.firstName}</td>
+                                <td>${user.lastName}</td>
+                                <td>${user.mobileNo}</td>
+                                <td>${user.emailId}</td>
+                                <td>${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.country}</td>
+                                <td>${user.loginId}</td>
+                                <td>${user.password}</td>
+                            </tr>
+                        `;
+              usersTableBody.append(userRow);
+            });
+          },
+          error: function (error) {
+            alert("Error fetching users");
+            console.log(error);
+          },
+        });
+        $("#addNewUserBtn").on("click", function () {
+          window.location.href = "index.html";
+        });
+      });
+    </script>
+  </body>
+</html>

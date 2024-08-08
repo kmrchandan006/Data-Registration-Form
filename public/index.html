@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>User Registration</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form id="userForm" autocomplete="off">
+      <!-- Hidden fields -->
+      <input
+        type="text"
+        name="hiddenField1"
+        style="display: none"
+        autocomplete="off"
+      />
+      <input
+        type="text"
+        name="hiddenField2"
+        style="display: none"
+        autocomplete="off"
+      />
+
+      <h2>Add User</h2>
+      <input
+        type="text"
+        name="firstName"
+        placeholder="First Name"
+        required
+        autocomplete="nope"
+      />
+      <input
+        type="text"
+        name="lastName"
+        placeholder="Last Name"
+        required
+        autocomplete="nope"
+      />
+      <input
+        type="text"
+        name="mobileNo"
+        placeholder="Mobile No"
+        required
+        autocomplete="nope"
+      />
+      <input
+        type="email"
+        name="emailId"
+        placeholder="Email"
+        required
+        autocomplete="nope"
+      />
+      <input
+        type="text"
+        name="street"
+        placeholder="Street"
+        required
+        autocomplete="nope"
+      />
+      <input
+        type="text"
+        name="city"
+        placeholder="City"
+        required
+        autocomplete="nope"
+      />
+      <input
+        type="text"
+        name="state"
+        placeholder="State"
+        required
+        autocomplete="nope"
+      />
+      <input
+        type="text"
+        name="country"
+        placeholder="Country"
+        required
+        autocomplete="nope"
+      />
+      <input
+        type="text"
+        name="loginId"
+        placeholder="Login ID"
+        required
+        autocomplete="nope"
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        required
+        autocomplete="new-password"
+      />
+      <button type="submit">Save</button>
+    </form>
+
+    <script>
+      $(document).ready(function () {
+        $("#userForm").on("submit", function (event) {
+          event.preventDefault();
+
+          const formData = {
+            firstName: $('input[name="firstName"]').val(),
+            lastName: $('input[name="lastName"]').val(),
+            mobileNo: $('input[name="mobileNo"]').val(),
+            emailId: $('input[name="emailId"]').val(),
+            address: {
+              street: $('input[name="street"]').val(),
+              city: $('input[name="city"]').val(),
+              state: $('input[name="state"]').val(),
+              country: $('input[name="country"]').val(),
+            },
+            loginId: $('input[name="loginId"]').val(),
+            password: $('input[name="password"]').val(),
+          };
+
+          $.ajax({
+            type: "POST",
+            url: "http://localhost:4000/api/users/",
+            data: JSON.stringify(formData),
+            contentType: "application/json",
+            success: function (response) {
+              alert("User saved successfully");
+              window.location.href = "display.html";
+            },
+            error: function (xhr) {
+              console.log("Error response:", xhr.responseText);
+              let errorMessage = "Error saving user:\n";
+
+              try {
+                const response = JSON.parse(xhr.responseText);
+                if (response.errors) {
+                  for (const field in response.errors) {
+                    errorMessage += `${field}: ${response.errors[field]}\n`;
+                  }
+                } else {
+                  errorMessage += "An unknown error occurred.";
+                }
+              } catch (e) {
+                errorMessage += "An unknown error occurred.";
+              }
+
+              alert(errorMessage);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
