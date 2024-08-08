@@ -10,11 +10,11 @@ const app = express();
 
 // Connect to the database
 connectDB();
-// app.use(
-//   cors({
-//     origin: "https://user-registration-enzu.onrender.com",
-//   })
-// );
+app.use(
+  cors({
+    origin: "https://data-registration-form-2.onrender.com",
+  })
+);
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "public")));
