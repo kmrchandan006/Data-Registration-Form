@@ -34,8 +34,11 @@ const userSchema = new mongoose.Schema({
   },
   emailId: {
     type: String,
-    required: [true, "Email is required"],
-    match: [/\S+@\S+\.\S+/, "Email format is invalid"],
+    required: [true, "required"],
+    match: [/\S+@\S+\.\S+/+/^[a-zA-Z0-9._%+-]+@yahoo\.com$/, "Email format is invalid"],
+     
+
+
   },
   address: {
     street: {
